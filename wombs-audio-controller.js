@@ -9,6 +9,8 @@
   */
 
   var Component = require( 'wombs-component' );
+  var Texture   = require( 'wombs-audio-texture' );
+
 
 
   AudioController.prototype = new Component();
@@ -33,10 +35,10 @@
     this.analyser.connect( this.gain );
     this.gain.connect( this.ctx.destination );
 
+    this.texture = new Texture( this.analyser );
+    this.addComponent( this.texture );
+
     this.setFrequencyBinCount( 1024 );
-
-    this.createTexture( this.analyser );
-
   
     this.addToUpdateArray( updateAnalyser ); 
   
@@ -81,24 +83,16 @@
 
   AudioController.prototype.setFrequencyBinCount = function( fbc ){
 
+ 
     this.analyser.frequencyBinCount = fbc;
     this.analyser.array = new Uint8Array( fbc );
+    
+    if( this.texture ){
+      this.texture.reset();
+    }
 
 
   }
-
-
-
-  AudioController.prototype.createTexture = function(){
-
-    var Texture = require( 'wombs-audio-texture' );
-
-    var texture = new Texture( this.analyser );
-
-    this.addComponent( texture );
-
-  }
-  
 
   var ac = new AudioController();
 
