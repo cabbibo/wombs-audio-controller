@@ -1,0 +1,26 @@
+{
+  "name": "wombs-audio-controller",
+  "version": "0.0.0",
+  "description": "audio controller for web-audio-api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:cabbibo/wombs-audio-controller.git"
+  },
+  "keywords": [
+    "web-audio-api",
+    "web",
+    "audio",
+    "api",
+    "audio"
+  ],
+  "author": "@cabbibo",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/cabbibo/wombs-audio-controller/issues"
+  },
+  "homepage": "https://github.com/cabbibo/wombs-audio-controller"
+}
