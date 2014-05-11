@@ -8,63 +8,15 @@
 
   */
 
-  var Component = require( 'wombs-component' );
+  var _ = require( 'underscore' );
+  
+  var Component = require( 'wombs-audio-component' );
   var Texture   = require( 'wombs-audio-texture' );
 
 
+  var mutate = {};
 
-  AudioController.prototype = new Component();
-
-  function AudioController(){
-
-    this._init();
-    
-    
-    this.detect();
-
-
-    this.ctx = new AudioContext();
-
-
-    this.gain     = this.ctx.createGain();
-    this.analyser = this.ctx.createAnalyser();
-    this.analyser.array = new Uint8Array();
-    this.input    = this.ctx.createGain();
-
-    this.input.connect( this.analyser );
-    this.analyser.connect( this.gain );
-    this.gain.connect( this.ctx.destination );
-
-    this.texture = new Texture( this.analyser );
-    this.addComponent( this.texture );
-
-    this.setFrequencyBinCount( 1024 );
-  
-    this.addToUpdateArray( updateAnalyser ); 
-  
-  }
-
-
-  var updateAnalyser = function(){
-
-    this.analyser.getByteFrequencyData( this.analyser.array );
-
-
-  }
-
-  AudioController.prototype.mute = function(){
-
-    this.gain.gain.value = 0;
-  }
-
-  AudioController.prototype.unmute = function(){
-
-    this.gain.gain.value = 1;
-
-  }
-
-
-  AudioController.prototype.detect = function(){
+  mutate.detect = function(){
 
     try {
       window.AudioContext = window.AudioContext||window.webkitAudioContext;
@@ -74,24 +26,35 @@
 
   }
 
-  AudioController.prototype.onError = function( string ){
-
+  mutate.onError = function( string ){
     console.log( string );
-
   }
 
 
-  AudioController.prototype.setFrequencyBinCount = function( fbc ){
+  AudioController.prototype = _.extend(
+    Component.prototype,
+    mutate
+  );
 
- 
-    this.analyser.frequencyBinCount = fbc;
-    this.analyser.array = new Uint8Array( fbc );
-    
-    if( this.texture ){
-      this.texture.reset();
+  function AudioController( params ){
+
+    this.detect();
+
+    var ctx = new AudioContext();
+    var input = ctx.createGainNode();
+    input.connect( ctx.destination );
+
+    var parentNode = {
+      input: input,
+      ctx: ctx
     }
 
+    Component.call( this , parentNode );
 
+    this.createAnalyser( 2048 );
+    this.createTexture( this.analyser );
+
+  
   }
 
   var ac = new AudioController();
