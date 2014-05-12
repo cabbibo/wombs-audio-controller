@@ -8,33 +8,30 @@
 
   */
 
-  var _ = require( 'underscore' );
-  
   var Component = require( 'wombs-audio-component' );
-  var Texture   = require( 'wombs-audio-texture' );
+  var _ = require( 'underscore' );
 
+  var mutation = {};
 
-  var mutate = {};
+  mutation.detect = function(){
 
-  mutate.detect = function(){
-
-    try {
+    try{
       window.AudioContext = window.AudioContext||window.webkitAudioContext;
-    }catch(e) {
+    }catch(e){
       this.onError( 'No Web Audio API' ); 
     }
 
   }
 
-  mutate.onError = function( string ){
+  mutation.onError = function( string ){
     console.log( string );
   }
 
-
   AudioController.prototype = _.extend(
     Component.prototype,
-    mutate
+    mutation 
   );
+
 
   function AudioController( params ){
 
@@ -51,9 +48,8 @@
 
     Component.call( this , parentNode );
 
-    this.createAnalyser( 2048 );
+    this.createAnalyser( 1024 );
     this.createTexture( this.analyser );
-
   
   }
 

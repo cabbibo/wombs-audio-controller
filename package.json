@@ -10,6 +10,10 @@
     "type": "git",
     "url": "git@github.com:cabbibo/wombs-audio-controller.git"
   },
+  "dependencies":{
+    "wombs-audio-component":"0.0.0",
+    "underscore":"1.6.0"
+  },
   "keywords": [
     "web-audio-api",
     "web",
